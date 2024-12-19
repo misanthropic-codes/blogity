@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Button as AuthButton } from "../auth/Button";
+import { Button as AuthButton } from "@/app/auth/Button";
 import { SessionProvider } from "next-auth/react";
 
 type Props = {};
