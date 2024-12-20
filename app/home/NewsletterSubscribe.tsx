@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-type Props = {};
-
-const NewsletterSubscribe = (props: Props) => {
+const NewsletterSubscribe = () => {
   const [subscribed, setSubscribed] = useState<boolean>(false);
 
   async function create(formData: FormData) {
