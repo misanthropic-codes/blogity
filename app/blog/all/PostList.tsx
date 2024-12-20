@@ -12,41 +12,31 @@ export type PostListProps = {
 
 export const PostsList = (props: PostListProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-4">
-      {props.posts.map((post: Post) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+      {props.posts.map((post) => (
         <div
           key={post.id}
-          className="w-full sm:w-40 md:w-60 lg:w-80 h-full bg-white"
+          className="bg-white/20 backdrop-blur-md rounded-lg shadow-lg transition-transform transform hover:scale-105"
         >
-          <Link
-            href={`/blog/${post.id}`}
-            className="block cursor-pointer border-2 rounded-md neo-shadow focus:shadow-none focus:translate-x-1 focus:translate-y-1 transform transition-shadow duration-100"
-          >
-            <article className="w-full h-full">
-              <figure className="w-full h-30 md:h-40 lg:h-72 border-b-2 ">
-                {post.imgURL ? (
-                  <img
-                    src={post.imgURL}
-                    alt="thumbnail"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src="/article-placeholder.png"
-                    alt="thumbnail"
-                    className="w-full h-full object-cover"
-                  />
-                )}
+          <Link href={`/blog/${post.id}`} className="block">
+            <article>
+              <figure className="w-full h-60 rounded-t-lg overflow-hidden">
+                <img
+                  src={post.imgURL || "/article-placeholder.png"}
+                  alt="thumbnail"
+                  className="w-full h-full object-cover"
+                />
               </figure>
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-white truncate mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-gray-300 line-clamp-3 mb-4">
+                  {post.content}
+                </p>
+                <p className="text-indigo-400 font-medium">Read More</p>
+              </div>
             </article>
-            <div className="px-6 py-5 text-left h-full">
-              <p className="text-base mb-4">
-                {post.createdAt?.toLocaleString()}
-              </p>
-              <h1 className="text-xl mb-4">{post.title}</h1>
-              <p className="text-xs mb-4 line-clamp-4">{post.content}</p>
-              <p className="text-indigo-600">Read More</p>
-            </div>
           </Link>
         </div>
       ))}

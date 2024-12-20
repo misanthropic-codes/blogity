@@ -16,19 +16,19 @@ const AllPosts = (props: Props) => {
 
   const filteredPosts = selectedCategoryId
     ? props.posts.filter((post) =>
-        post.categories.find((category) => category.id === selectedCategoryId)
+        post.categories.some((category) => category.id === selectedCategoryId)
       )
     : props.posts;
 
   return (
-    <>
+    <div>
       <CategorySelector
         categories={props.categories}
         selectedCategoryId={selectedCategoryId}
         selectCategory={handleCategoryClick}
       />
       <PostsList posts={filteredPosts} />
-    </>
+    </div>
   );
 };
 
