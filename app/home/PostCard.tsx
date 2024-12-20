@@ -11,10 +11,25 @@ const PostCard = ({ post, className }: Props) => {
   return (
     <Link
       href={`/blog/${post.id}`}
-      className={`${className} p-4 rounded border-2 line-clamp-7 shadow-[0.25rem_0.25rem_0px_0px_rgba(0,0,0,1)]`}
+      className={`
+        ${className}
+        block h-full w-full 
+        rounded-xl
+        bg-white/5
+        border border-white/10
+        transition-all duration-500
+        hover:border-white/20
+        group relative overflow-hidden
+      `}
     >
-      <h3 className="text-2xl lg:text-3xl mb-3">{post.title}</h3>
-      <p className="line-clamp-6">{post.content}</p>
+      <div className="p-6 relative z-10">
+        <h3 className="text-2xl lg:text-3xl font-bold mb-4 text-white">
+          {post.title}
+        </h3>
+        <p className="line-clamp-6 text-gray-400">{post.content}</p>
+      </div>
+
+      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </Link>
   );
 };
