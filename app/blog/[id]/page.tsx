@@ -1,7 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 
-// @ts-ignore
 const Page = async ({
   params,
 }: {
