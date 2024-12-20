@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { createPost } from "@/app/utils/publishPost";
@@ -7,14 +8,12 @@ import type { Category } from "@prisma/client";
 import CategoryDropdown from "@/app/blog/new/CategoryDropdown";
 import { Prisma } from "@prisma/client";
 
+import "@uploadthing/react/styles.css";
+import { UploadButton } from "@/app/utils/uploadthing";
+
 type Props = {
   blogCategories: Category[];
 };
-
-// You need to import our styles for the button to look right. Best to import in the root /layout.tsx but this is fine
-import "@uploadthing/react/styles.css";
-
-import { UploadButton } from "@/app/utils/uploadthing";
 
 const NewBlogForm = (props: Props) => {
   const { data: session, status } = useSession();
@@ -25,13 +24,10 @@ const NewBlogForm = (props: Props) => {
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
   const [postID, setPostID] = useState<number | null>(null);
-
   const [submitted, setSubmitted] = useState<boolean>(false);
 
   if (!session && status !== "loading")
-    return <div>You must be signed in to post</div>;
-
-  console.log(props.blogCategories);
+    return <div className="text-white">You must be signed in to post</div>;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,6 +35,7 @@ const NewBlogForm = (props: Props) => {
     const userId = user?.id;
 
     if (!userId) return;
+
     try {
       let newPost: Prisma.PostUncheckedCreateInput = {
         title,
@@ -52,6 +49,7 @@ const NewBlogForm = (props: Props) => {
           connect: [{ id: categoryId }],
         };
       }
+
       const post = await createPost(newPost);
       setPostID(post.id);
       setSubmitted(true);
@@ -62,76 +60,91 @@ const NewBlogForm = (props: Props) => {
 
   if (submitted)
     return (
-      <div className="py-2 container flex flex-col mt-12">
-        <div className="flex flex-col flex-1 items-stretch justify-center h-full text-left border p-8">
-          <h1 className="text-4xl">Your post has been published:</h1>
+      <div className="py-12 container flex flex-col mt-12">
+        <div className="flex flex-col items-center justify-center text-left border p-8 rounded-lg shadow-md bg-white">
+          <h1 className="text-3xl font-semibold text-indigo-500">
+            Your post has been published!
+          </h1>
           <Link
             href={`/blog/${postID}`}
-            className="text-indigo-500 text-xl mt-4"
+            className="text-indigo-700 text-lg mt-4 hover:underline"
           >
-            Click here to view
+            Click here to view your post
           </Link>
         </div>
       </div>
     );
 
   return (
-    <div className="min-h-[calc(100vh-130px)] py-2 container flex flex-col mt-12">
+    <div className="min-h-[calc(100vh-130px)] py-12 container flex flex-col mt-0 bg-black relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-96 h-96 bg-purple-900/20 rounded-full mix-blend-screen filter blur-3xl" />
+        <div className="absolute top-40 right-10 w-96 h-96 bg-blue-900/20 rounded-full mix-blend-screen filter blur-3xl" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-900/20 rounded-full mix-blend-screen filter blur-3xl" />
+      </div>
+
       <form
-        className="flex flex-col flex-1 items-stretch justify-center h-full text-left"
+        className="relative flex flex-col items-center justify-center text-left w-full max-w-2xl mx-auto bg-white/5 shadow-lg p-8 rounded-xl border border-white/10 backdrop-blur-xl"
         onSubmit={handleSubmit}
       >
+        <h2 className="text-3xl font-semibold text-white mb-4">
+          Create a New Post
+        </h2>
+
         <input
           type="text"
-          className="text-6xl focus-visible:outline-none"
-          placeholder="Title"
+          className="w-full text-2xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white bg-black/40 backdrop-blur-md"
+          placeholder="Enter title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           name="title"
         />
+
         <textarea
           name="content"
-          className="flex-1 focus-visible:outline-none text-4xl mt-2"
+          className="w-full text-lg p-4 border border-gray-300 rounded-lg mb-4 h-48 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white bg-black/40 backdrop-blur-md"
+          placeholder="Write your content here..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <div className="self-start">
+
+        <div className="w-full mb-6">
           {thumbnail && (
             <img
               src={thumbnail}
               alt="Thumbnail"
-              className="w-20 h-20 object-cover rounded-full"
+              className="w-20 h-20 object-cover rounded-full mb-4"
             />
           )}
-          <label className="text-slate-600 mb-3">
-            {thumbnail ? "Change Image" : "Add thumbnail image(optional)"}
+          <label className="block text-white text-sm mb-2">
+            {thumbnail ? "Change Image" : "Add thumbnail image (optional)"}
           </label>
           <UploadButton
             className="items-start"
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
-              // Do something with the response
-              console.log("Files: ", res);
               if (res) {
                 setThumbnail(res[0].url);
               }
             }}
             onUploadError={(error: Error) => {
-              // Do something with the error.
               alert(`ERROR! ${error.message}`);
             }}
           />
-          <CategoryDropdown
-            list={props.blogCategories}
-            selected={categoryId}
-            setSelected={(selected: number) => setCategoryId(selected)}
-          />
         </div>
+
+        {/* Ensure CategoryDropdown is functioning */}
+        <CategoryDropdown
+          list={props.blogCategories}
+          selected={categoryId}
+          setSelected={(selected: number) => setCategoryId(selected)}
+        />
+
         <button
           type="submit"
-          className="w-fit-content text-white bg-indigo-400 px-4 py-2 sm:px-6 sm:py-4 mt-6 border-2 rounded shadow-[0.25rem_0.25rem_0px_0px_rgba(0,0,0,1)]"
+          className="mt-6 w-full py-3 px-6 bg-indigo-600 text-white font-semibold text-xl rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-300"
         >
-          Create
+          Publish Post
         </button>
       </form>
     </div>

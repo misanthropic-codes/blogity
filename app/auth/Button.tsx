@@ -11,42 +11,43 @@ export const Button = (props: Props) => {
 
   if (status === "loading") {
     return (
-      <div className="bg-white/80 rounded-lg p-4 text-gray-600">Loading...</div>
+      <div className="bg-gray-700/80 rounded-lg p-4 text-gray-600">
+        Loading...
+      </div>
     );
   }
 
-  if (session) {
-    return (
-      <div className="flex items-stretch gap-4">
-        <Link href="/blog/new" className="relative overflow-hidden group">
-          <div className="relative flex items-center bg-white/80 rounded-lg px-5 py-2.5 text-gray-700">
-            ✍️ Write a Post
-          </div>
-          <div className="absolute inset-[-1px] bg-[linear-gradient(to_right,transparent,white,transparent)] opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-500" />
-        </Link>
+  const buttonClass =
+    "relative inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition-all duration-300";
 
+  return session ? (
+    <div className="flex items-center gap-4">
+      {/* Write a Post Button */}
+      <Link href="/blog/new" className="group">
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            signOut();
-          }}
-          className="relative overflow-hidden group"
+          className={`${buttonClass} bg-gray-800 text-gray-200 border-2 border-transparent hover:border-gray-500 hover:bg-gray-700`}
         >
-          <div className="relative bg-white/80 rounded-lg px-5 py-2.5 text-gray-700">
-            Sign Out
-          </div>
-          <div className="absolute inset-[-1px] bg-[linear-gradient(to_right,transparent,white,transparent)] opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-500" />
+          ✍️ Write a Post
         </button>
-      </div>
-    );
-  }
+      </Link>
 
-  return (
-    <button onClick={() => signIn()} className="relative overflow-hidden group">
-      <div className="relative bg-white/80 rounded-lg px-5 py-2.5 text-gray-700">
-        Sign In
-      </div>
-      <div className="absolute inset-[-1px] bg-[linear-gradient(to_right,transparent,white,transparent)] opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-500" />
+      {/* Sign Out Button */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          signOut();
+        }}
+        className={`${buttonClass} bg-gray-800 text-gray-200 border-2 border-transparent hover:border-gray-500 hover:bg-gray-700`}
+      >
+        Sign Out
+      </button>
+    </div>
+  ) : (
+    <button
+      onClick={() => signIn()}
+      className={`${buttonClass} bg-gray-800 text-gray-200 border-2 border-transparent hover:border-gray-500 hover:bg-gray-700`}
+    >
+      Sign In
     </button>
   );
 };
