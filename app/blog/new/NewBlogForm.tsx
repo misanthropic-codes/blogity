@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { createPost } from "@/app/utils/publishPost";
 import Link from "next/link";
+import Image from "next/image";
 import type { Category } from "@prisma/client";
 import CategoryDropdown from "@/app/blog/new/CategoryDropdown";
 import { Prisma } from "@prisma/client";
@@ -14,6 +15,13 @@ import { UploadButton } from "@/app/utils/uploadthing";
 type Props = {
   blogCategories: Category[];
 };
+
+interface SessionUser {
+  id: number;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
 
 const NewBlogForm = (props: Props) => {
   const { data: session, status } = useSession();
@@ -31,13 +39,13 @@ const NewBlogForm = (props: Props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const user = session?.user as any;
+    const user = session?.user as SessionUser;
     const userId = user?.id;
 
     if (!userId) return;
 
     try {
-      let newPost: Prisma.PostUncheckedCreateInput = {
+      const newPost: Prisma.PostUncheckedCreateInput = {
         title,
         content,
         authorId: userId,
@@ -110,9 +118,11 @@ const NewBlogForm = (props: Props) => {
 
         <div className="w-full mb-6">
           {thumbnail && (
-            <img
+            <Image
               src={thumbnail}
               alt="Thumbnail"
+              width={80}
+              height={80}
               className="w-20 h-20 object-cover rounded-full mb-4"
             />
           )}
@@ -132,8 +142,6 @@ const NewBlogForm = (props: Props) => {
             }}
           />
         </div>
-
-        {/* Ensure CategoryDropdown is functioning */}
         <CategoryDropdown
           list={props.blogCategories}
           selected={categoryId}

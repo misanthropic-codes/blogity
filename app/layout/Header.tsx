@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Button as AuthButton } from "@/app/auth/Button";
 import { SessionProvider } from "next-auth/react";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {

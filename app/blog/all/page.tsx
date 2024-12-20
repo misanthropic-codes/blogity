@@ -3,9 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import AllPosts from "./AllPosts";
 
-type Props = {};
-
-const page = async (props: Props) => {
+const page = async () => {
   type PostWithCategories = Prisma.PostGetPayload<{
     include: { categories: true };
   }>;

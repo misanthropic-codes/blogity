@@ -1,6 +1,7 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 
+// @ts-ignore
 const Page = async ({
   params,
 }: {
@@ -8,15 +9,24 @@ const Page = async ({
     id: string;
   };
 }) => {
+  // Ensure the `params.id` is converted to a number safely
+  const postId = Number(params.id);
+  if (isNaN(postId)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        <p>Invalid post ID.</p>
+      </div>
+    );
+  }
+
   const post = await prisma.post.findUnique({
     where: {
-      id: Number(params.id),
+      id: postId,
     },
     include: {
       author: true,
     },
   });
-  console.log(post);
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
@@ -49,11 +59,15 @@ const Page = async ({
                   {/* Author */}
                   <div className="flex items-center mb-6">
                     <p className="text-sm text-gray-400">By</p>
-                    <div
-                      className="w-8 h-8 ml-3 mr-2 rounded-full bg-contain border border-white/10"
-                      style={{ backgroundImage: `url(${post.author.image})` }}
-                    ></div>
-                    <p className="text-sm text-gray-300">{post.author.name}</p>
+                    {post.author?.image && (
+                      <div
+                        className="w-8 h-8 ml-3 mr-2 rounded-full bg-contain border border-white/10"
+                        style={{ backgroundImage: `url(${post.author.image})` }}
+                      ></div>
+                    )}
+                    <p className="text-sm text-gray-300">
+                      {post.author?.name || "Unknown"}
+                    </p>
                   </div>
                   {/* Content */}
                   <p className="text-lg text-gray-300">{post.content}</p>

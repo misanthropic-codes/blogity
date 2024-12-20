@@ -1,10 +1,8 @@
 import React from "react";
-import { Github, Twitter } from "lucide-react"; // Import icons from Lucide
+import { Github, Twitter } from "lucide-react";
 import Link from "next/link";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer className="bg-black text-gray-300 py-12 relative overflow-hidden">
       {/* Background Gradient */}

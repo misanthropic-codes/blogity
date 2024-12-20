@@ -1,9 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-type Props = {};
-
-const HeroSection = (props: Props) => {
+const HeroSection = () => {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <div className="absolute inset-0">
