@@ -12,8 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "strict": false,
-    "noImplicitAny": false,
+    "noImplicitAny": false, // Consider setting this to true for stricter checks.
     "incremental": true,
     "plugins": [
       {
