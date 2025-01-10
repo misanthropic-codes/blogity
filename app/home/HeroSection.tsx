@@ -17,26 +17,24 @@ const HeroSection = () => {
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-8">
                 <div className="col-span-7 space-y-8">
                   <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white">
-                    Tech News for Busy Peeps
+                    Blogs From Mind Bogglers
                   </h1>
 
                   <h2 className="text-lg sm:text-xl text-gray-400">
-                    Stay up-to-date with the latest tech news and announcements.
+                    Unleash Your Creative Side
                   </h2>
 
                   <ul className="space-y-4">
-                    {[
-                      "Industry News",
-                      "Product Launches",
-                      "Innovation Spotlights",
-                    ].map((feature, index) => (
-                      <li key={index} className="flex items-center">
-                        <span className="flex items-center justify-center w-8 h-8 mr-4 rounded-lg bg-white/5 border border-white/10 text-gray-300">
-                          ✓
-                        </span>
-                        <span className="text-gray-300">{feature}</span>
-                      </li>
-                    ))}
+                    {["Fresh As lime", "Juicy as Lemon", "Cool As Ice"].map(
+                      (feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <span className="flex items-center justify-center w-8 h-8 mr-4 rounded-lg bg-white/5 border border-white/10 text-gray-300">
+                            ✓
+                          </span>
+                          <span className="text-gray-300">{feature}</span>
+                        </li>
+                      )
+                    )}
                   </ul>
 
                   <div>
